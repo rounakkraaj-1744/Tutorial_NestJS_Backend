@@ -36,5 +36,4 @@ export class EmployeeController {
   getEmployees(){
     return this.employeeService.getEmployeeInfo();
   }
-
 }
