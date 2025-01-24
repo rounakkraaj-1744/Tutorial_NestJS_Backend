@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 @Injectable()
 export class EmployeeService {
@@ -22,7 +24,11 @@ export class EmployeeService {
   //   return `This action removes a #${id} employee`;
   // }
 
-  getAllEmployee(){
-    return "Hiii!!!";
+  getEmployeeInfo(){
+    return {
+      "name":"ABC",
+      "id":123,
+      "email":"abc@gmail.com"
+    }
   }
 }
