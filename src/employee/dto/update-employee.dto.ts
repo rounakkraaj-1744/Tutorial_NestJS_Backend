@@ -4,11 +4,11 @@ import { IsEmail, IsInt, IsString } from "class-validator"
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
     @IsString()
-    emp_name?: string | undefined;
+    emp_name?: string;
 
     @IsInt()
-    emp_id?: number | undefined;
+    emp_id?: number;
 
     @IsEmail()
-    email?: string | undefined;
+    email?: string;
 }
