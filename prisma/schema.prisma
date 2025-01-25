@@ -8,8 +8,8 @@ datasource db {
 }
 
 model Info{
-  id            Int         @id @default(autoincrement())
-  emp_name      String  
-  emp_id        Int         @unique
-  email         String      @unique
+  id              Int         @id @default(autoincrement())
+  emp_name        String      
+  emp_id          Int         @unique
+  email           String      @unique
 }
