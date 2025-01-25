@@ -7,32 +7,32 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 export class EmployeeService {
   constructor (private prisma:PrismaService){}
 
-  async create(data: CreateEmployeeDto) {
+  async createEmployee(data: CreateEmployeeDto) {
     return this.prisma.info.create({
       data,
     });
   }
 
-  async update(id: number, data:UpdateEmployeeDto){
+  async updateEmployee(id: number, data:UpdateEmployeeDto){
     return this.prisma.info.update({
       where: {id},
       data
     })
   }
 
-  async findMany(id:number){
+  async getAllEmployees(id:number){
     return this.prisma.info.findMany({
       where: {id},
     })
   }
 
-  async findUnique(id:number){
+  async getOneEmployee(id:number){
     return this.prisma.info.findUnique({
       where: {id},
     })
   }
 
-  delete(id:number){
+  async deleteEmployee(id:number){
     return this.prisma.info.delete({
       where: {id},
     })
