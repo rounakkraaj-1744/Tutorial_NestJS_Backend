@@ -29,8 +29,8 @@ export class EmployeeController {
   }
 
   @Post()
-  async createEmployee(@Param("id") id:number, @Body("data") createemployeedto:CreateEmployeeDto){
-    return this.employeeService.createEmployee(+id, createemployeedto)
+  async createEmployee(@Body() createemployeedto: CreateEmployeeDto) {
+    return this.employeeService.createEmployee(createemployeedto)
   }
 
   @Delete()

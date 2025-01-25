@@ -7,15 +7,19 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 export class EmployeeService {
   constructor (private prisma:PrismaService){}
 
-  async createEmployee(p0: number, data: CreateEmployeeDto) {
+  async createEmployee(data: CreateEmployeeDto) {
     return this.prisma.info.create({
-      data,
+      data: {
+        emp_name: data.emp_name,
+        emp_id: Number(data.emp_id),
+        email: data.email
+    },
     });
   }
 
   async updateEmployee(id: number, data:UpdateEmployeeDto){
     return this.prisma.info.update({
-      where: {id},
+      where: { id: Number(id) },
       data
     })
   }
@@ -26,13 +30,13 @@ export class EmployeeService {
 
   async getOneEmployee(id:number){
     return this.prisma.info.findUnique({
-      where: {id},
-    })
+      where: { id: Number(id) },
+    });
   }
 
   async deleteEmployee(id:number){
     return this.prisma.info.delete({
-      where: {id},
+      where: { id: Number(id) },
     })
   }
 }
