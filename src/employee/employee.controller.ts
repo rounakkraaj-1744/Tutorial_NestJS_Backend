@@ -27,8 +27,8 @@ export class EmployeeController{
     return this.employeeService.updateEmployee(+id, data);
   }
 
-  @Delete()
+  @Patch(":id")
   async deleteEmployee(@Param("id") id:number){
-    return this.employeeService.deleteEmployee(+id);
+    return this.employeeService.deleteEmployee(id);
   }
 }

@@ -3,4 +3,5 @@ export class Employee {
     emp_name:string
     emp_id:number
     email:string
+    statusDelete:boolean
 }
