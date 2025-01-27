@@ -28,9 +28,11 @@ export class EmployeeService{
         where: {id: Number(id)}
       });
     }
+
     async findAllEmployee(){
       return this.prisma.info.findMany();
     }
+    
     async updateEmployee(id:Number, data:UpdateEmployeeDto){
       return this.prisma.info.update({
         where: {id: Number(id)},

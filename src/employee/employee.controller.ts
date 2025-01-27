@@ -3,11 +3,11 @@ import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 
-@Controller()
+@Controller("/employee")
 export class EmployeeController{
   constructor (private employeeService: EmployeeService){}
 
-  @Get()
+  @Get(":id")
   async getOneEmployee(@Param("id") id:number){
     return this.employeeService.findOneEmployee(+id);
   }
