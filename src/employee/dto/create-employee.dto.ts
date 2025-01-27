@@ -1,12 +1,12 @@
-import { IsEmail, IsInt, IsString } from "class-validator"
+import { IsEmail, IsInt, IsString } from "class-validator";
 
 export class CreateEmployeeDto {
     @IsString()
-    emp_name:string
+    emp_name: string
 
     @IsInt()
-    emp_id:number
+    emp_id: number
 
     @IsEmail()
-    email:string
+    email: string
 }

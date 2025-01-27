@@ -1,42 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "prisma/prisma.service";
+import { CreateEmployeeDto } from "./dto/create-employee.dto";
+import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 
 @Injectable()
-export class EmployeeService {
-  constructor (private prisma:PrismaService){}
+export class EmployeeService{
+  constructor(private prisma:PrismaService){ }
 
-  async createEmployee(data: CreateEmployeeDto) {
-    return this.prisma.info.create({
-      data: {
-        emp_name: data.emp_name,
-        emp_id: Number(data.emp_id),
-        email: data.email
-    },
-    });
-  }
+  /*
+    POST->create
+    GET->findOne and findALll
+    PATCH->update
+    DELETE->delete
+  */
 
-  async updateEmployee(id: number, data:UpdateEmployeeDto){
-    return this.prisma.info.update({
-      where: { id: Number(id) },
-      data
-    })
-  }
-
-  async getAllEmployees(){
-    return this.prisma.info.findMany()
-  }
-
-  async getOneEmployee(id:number){
-    return this.prisma.info.findUnique({
-      where: { id: Number(id) },
-    });
-  }
-
-  async deleteEmployee(id:number){
-    return this.prisma.info.delete({
-      where: { id: Number(id) },
-    })
-  }
+    async createEmployee(data:CreateEmployeeDto){
+      return this.prisma.info.create({
+        data:{
+          emp_name: data.emp_name,
+          emp_id: data.emp_id,
+          email:data.email
+        }
+      });
+    }
+    async findOneEmployee(id:Number){
+      return this.prisma.info.findUnique({
+        where: {id: Number(id)}
+      });
+    }
+    async findAllEmployee(){
+      return this.prisma.info.findMany();
+    }
+    async updateEmployee(id:Number, data:UpdateEmployeeDto){
+      return this.prisma.info.update({
+        where: {id: Number(id)},
+        data:{
+          emp_name: data.emp_name,
+          emp_id: data.emp_id,
+          email:data.email
+        }
+      })
+    }
+    async deleteEmployee(id:Number){
+      return this.prisma.info.delete({
+        where: {id: Number(id)}
+      })
+    }
 }

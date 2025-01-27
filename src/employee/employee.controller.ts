@@ -1,36 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { EmployeeService } from './employee.service';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { EmployeeService } from "./employee.service";
+import { CreateEmployeeDto } from "./dto/create-employee.dto";
+import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 
-@Controller('/employee')
-export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
-  /*
-    GET    -> findUnique or findMany
-    PATCH  -> update
-    POST   -> create
-    DELETE -> delete
-  */  
+@Controller()
+export class EmployeeController{
+  constructor (private employeeService: EmployeeService){}
 
   @Get()
   async getOneEmployee(@Param("id") id:number){
-    return this.employeeService.getOneEmployee(+id);
+    return this.employeeService.findOneEmployee(+id);
   }
 
   @Get()
-  async getAllEmployee(){
-    return this.employeeService.getAllEmployees();
-  }
-
-  @Patch()
-  async updateEmployee(@Param("id") id:number, @Body("data") updateemployeedto:UpdateEmployeeDto){
-    return this.employeeService.updateEmployee(+id, updateemployeedto);
+  async getAllEmployees(){
+    return this.employeeService.findAllEmployee();
   }
 
   @Post()
-  async createEmployee(@Body() createemployeedto: CreateEmployeeDto) {
-    return this.employeeService.createEmployee(createemployeedto)
+  async createEmployee(@Body() data:CreateEmployeeDto){
+    return this.employeeService.createEmployee(data);
+  }
+
+  @Patch()
+  async updateEmployee(@Param("id") id:number, @Body() data:UpdateEmployeeDto){
+    return this.employeeService.updateEmployee(+id, data);
   }
 
   @Delete()
