@@ -43,6 +43,7 @@ export class EmployeeService{
         }
       })
     }
+    
     async deleteEmployee(id:Number){
       return this.prisma.info.delete({
         where: {id: Number(id)}
