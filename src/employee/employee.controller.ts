@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/commo
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
+import { EmailParam } from "src/decorator/email.decorator";
 
 @Controller("/employee")
 export class EmployeeController{
@@ -31,4 +32,9 @@ export class EmployeeController{
   async deleteEmployee(@Param("id") id:number){
     return this.employeeService.deleteEmployee(id);
   }
+
+  @Get("search/:email")
+    getEmployeeByEmail(@EmailParam() email: string){
+        return this.employeeService.findEmployeeByEmail(email);
+    }
 }

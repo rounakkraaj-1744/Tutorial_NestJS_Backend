@@ -49,4 +49,12 @@ export class EmployeeService{
         where: {id: Number(id)}
       })
     }
+
+    async findEmployeeByEmail(email:string){
+      const result = await this.prisma.info.findUnique({where: {email}});
+      if (result)
+        return { data: result, message: "successfully searched"}
+      else
+        return { data:result, message:"Email Not Found"};
+    }
 }
