@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { EmployeeController } from './employee.controller';
 import { PrismaService } from 'prisma/prisma.service';
 import { EmployeeService } from './employee.service';
+import { ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   controllers: [EmployeeController],
-  providers: [PrismaService, EmployeeService],
+  providers: [PrismaService, EmployeeService, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }],
 })
 export class EmployeeModule {}
