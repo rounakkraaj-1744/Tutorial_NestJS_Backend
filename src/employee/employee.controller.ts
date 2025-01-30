@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes } from "@nestjs/common";
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import { EmailParam } from "src/decorator/email.decorator";
+import { IntegerPipe } from "src/pipe/integer.pipe";
 
 @Controller("/employee")
 export class EmployeeController{
   constructor (private employeeService: EmployeeService){}
 
   @Get(":id")
+  @UsePipes(IntegerPipe)
   async getOneEmployee(@Param("id") id:number){
-    return this.employeeService.findOneEmployee(+id);
+    return this.employeeService.findOneEmployee(id);
   }
 
   @Get()
