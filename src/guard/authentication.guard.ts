@@ -1,24 +1,26 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
-import { Observable, tap } from "rxjs";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { Observable } from "rxjs";
 
 @Injectable()
-export class LoggingInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    const method = request.method;
-    const url = request.url;
-
-    console.log(`Incoming request: ${method} ${url}`);
-    const startTime = Date.now();
-    
-    return next
-      .handle()
-      .pipe(
-        tap(() =>
-          console.log(
-            `Response for ${method} ${url} took ${Date.now() - startTime}ms`,
-          ),
-        ),
-      );
-  }
+export class AuthenticationGuard implements CanActivate{
+    constructor(private jwtService: JwtService){}
+    canActivate(ctx: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        const request=ctx.switchToHttp().getRequest();
+        const authHeader=request.headers.authorization;
+        console.log(authHeader);
+        
+        if(!authHeader || !authHeader.startsWith('Bearer '))
+            throw new UnauthorizedException("Access Denied");
+        
+        try {
+            const token=authHeader.split(' ')[1];            
+            const payload=this.jwtService.verify(token);                  
+            request.user=payload;
+            console.log(request.user);            
+            return true;
+        } catch (error) {
+            throw new UnauthorizedException('Access Denied. Invalid or Expired Token')
+        }
+    }
 }
