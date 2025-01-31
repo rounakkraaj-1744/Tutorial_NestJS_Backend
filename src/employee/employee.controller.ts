@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, UsePipes } from "@nestjs/common";
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import { EmailParam } from "src/decorator/email.decorator";
-// import { IntegerPipe } from "src/pipe/integer.pipe";
+import { IntegerPipe } from "src/pipe/integer.pipe";
+import { Roles } from "src/decorator/role.decorator";
+import { AuthorizationGuard } from "src/guard/authorisation.guard";
 
 @Controller("/employee")
 export class EmployeeController{
   constructor (private employeeService: EmployeeService){}
 
   @Get(":id")
-  // @UsePipes(IntegerPipe)
+  @UsePipes(IntegerPipe)
   async getOneEmployee(@Param("id", ParseIntPipe) id:number){
     return this.employeeService.findOneEmployee(id);
   }
@@ -21,6 +23,8 @@ export class EmployeeController{
   }
 
   @Post()
+  @Roles("admin")
+  @UseGuards(AuthorizationGuard)
   async createEmployee(@Body() data:CreateEmployeeDto){
     return this.employeeService.createEmployee(data);
   }

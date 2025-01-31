@@ -14,7 +14,7 @@ import { JwtModule } from "@nestjs/jwt";
   ThrottlerModule.forRoot([
     {
       ttl: 60000,
-      limit: 2,
+      limit: 20,
     },
   ]),
 ],
