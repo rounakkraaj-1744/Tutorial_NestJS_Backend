@@ -6,6 +6,8 @@ import { EmailParam } from "src/decorator/email.decorator";
 import { IntegerPipe } from "src/pipe/integer.pipe";
 import { Roles } from "src/decorator/role.decorator";
 import { AuthorizationGuard } from "src/guard/authorisation.guard";
+import { EmployeeDTO } from "./dto/employee.dto";
+import { Serialize } from "src/interceptor/serialize.interceptor";
 
 @Controller("/employee")
 export class EmployeeController{
@@ -13,6 +15,7 @@ export class EmployeeController{
 
   @Get(":id")
   @UsePipes(IntegerPipe)
+  @Serialize(EmployeeDTO)
   async getOneEmployee(@Param("id", ParseIntPipe) id:number){
     return this.employeeService.findOneEmployee(id);
   }
