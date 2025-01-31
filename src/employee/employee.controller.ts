@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGua
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
-import { EmailParam } from "src/common/decorator/email.decoratorcorator";
+import { EmailParam } from "src/common/decorator/email.decorator";
 import { IntegerPipe } from "src/common/pipe/integer.pipe";
-import { Roles } from "src/common/decorator/role.decoratorcorator";
+import { Roles } from "src/common/decorator/role.decorator";
 import { AuthorizationGuard } from "src/common/guard/authorisation.guard";
 import { EmployeeDTO } from "./dto/employee.dto";
 import { Serialize } from "src/common/interceptor/serialize.interceptor";
