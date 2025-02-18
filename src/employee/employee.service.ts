@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "prisma/prisma.service";
+import { PrismaService } from "../../prisma/prisma.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 
@@ -8,10 +8,10 @@ export class EmployeeService{
   constructor(private prisma:PrismaService){ }
 
   /*
-    POST->create
-    GET->findOne and findALll
-    PATCH->update
-    DELETE->delete
+    POST   ->  create
+    GET    ->  findUnique and findAll
+    PATCH  ->  update
+    DELETE ->  delete
   */
 
     async createEmployee(data:CreateEmployeeDto){
