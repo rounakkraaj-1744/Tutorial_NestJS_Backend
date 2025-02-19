@@ -4,6 +4,7 @@ import { PrismaService } from 'prisma/prisma.service';
 import { EmployeeService } from './employee.service';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   controllers: [EmployeeController],
@@ -11,5 +12,6 @@ import { APP_GUARD } from '@nestjs/core';
     provide: APP_GUARD,
     useClass: ThrottlerGuard
   }],
+  imports: [CacheModule.register()]
 })
 export class EmployeeModule {}
