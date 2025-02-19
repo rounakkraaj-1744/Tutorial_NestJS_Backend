@@ -10,6 +10,13 @@ const mockEmployee = {
   statusDelete: false,
 };
 
+const mockRepository = {
+  findMany: jest.fn(),
+  create: jest.fn(),
+  findUnique: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+};
 
 describe('EmployeeService', () => {
   let employeeService: EmployeeService;
@@ -17,7 +24,7 @@ describe('EmployeeService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EmployeeService, PrismaService],
+      providers: [EmployeeService, {provide: PrismaService, useValue: mockRepository}],
     }).compile();
 
     employeeService = module.get<EmployeeService>(EmployeeService);
