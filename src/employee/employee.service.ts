@@ -6,14 +6,7 @@ import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 @Injectable()
 export class EmployeeService{
   constructor(private prisma:PrismaService){ }
-
-  /*
-    POST   ->  create
-    GET    ->  findUnique and findAll
-    PATCH  ->  update
-    DELETE ->  delete
-  */
-
+  /* POST   ->  create, GET    ->  findUnique and findAll, PATCH  ->  update, DELETE ->  delete */
     async createEmployee(data:CreateEmployeeDto){
       return this.prisma.info.create({
         data:{
