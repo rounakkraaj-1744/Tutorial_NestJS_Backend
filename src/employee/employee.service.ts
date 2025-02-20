@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 
 @Injectable()
 export class EmployeeService {
@@ -25,7 +25,6 @@ export class EmployeeService {
 
   async findAllEmployee() {
     const cacheKey = "mycachekey";
-    //@ts-ignore
     const cachedData = await this.cacheManager.get(cacheKey);
 
     if(cachedData)
