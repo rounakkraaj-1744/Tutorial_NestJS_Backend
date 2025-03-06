@@ -8,11 +8,11 @@ import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   controllers: [EmployeeController],
-  // providers: [PrismaService, EmployeeService, {
-  //   provide: APP_GUARD,
-  //   useClass: ThrottlerGuard
-  // }],
-  providers: [PrismaService, EmployeeService],
+  providers: [PrismaService, EmployeeService, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }],
+  // providers: [PrismaService, EmployeeService],
   imports: [CacheModule.register()]
 })
 export class EmployeeModule {}

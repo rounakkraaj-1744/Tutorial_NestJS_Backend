@@ -24,16 +24,21 @@ export class EmployeeService {
   }
 
   async findAllEmployee() {
-    const cacheKey = "mycachekey";
+    const cacheKey = "employee_list";
     const cachedData = await this.cacheManager.get(cacheKey);
-
-    if(cachedData)
+  
+    if (cachedData) {
+      console.log("Returning cached data");
       return cachedData;
-
-    //@ts-ignore
-    await this.cacheManager.set(cacheKey, this.prisma.info.findMany(), {ttl: 300});
-    return this.prisma.info.findMany();
+    }
+  
+    console.log("Fetching from database...");
+    const employees = await this.prisma.info.findMany();
+  
+    await this.cacheManager.set(cacheKey, employees, 300_000);
+    return employees;
   }
+  
 
   async updateEmployee(id: Number, data: UpdateEmployeeDto) {
     return this.prisma.info.update({
