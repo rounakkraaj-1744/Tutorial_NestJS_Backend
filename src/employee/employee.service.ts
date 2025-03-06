@@ -3,6 +3,9 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
+import { PaginatedEmployeeDTO } from "./dto/paginated-employee.dto";
+import { Prisma } from "@prisma/client";
+import { EmployeeDTO } from "./dto/employee.dto";
 
 @Injectable()
 export class EmployeeService {
@@ -23,20 +26,62 @@ export class EmployeeService {
     });
   }
 
-  async findAllEmployee() {
-    const cacheKey = "employee_list";
+  async findAllEmployee(options: { 
+    page: number, 
+    limit: number, 
+    sort?: { field: string, order: string }, 
+    search?: string 
+  }): Promise<PaginatedEmployeeDTO> {
+      
+    const cacheKey = `employee_list_${options.page}_${options.limit}_${options.sort?.field}_${options.sort?.order}_${options.search}`;
     const cachedData = await this.cacheManager.get(cacheKey);
   
     if (cachedData) {
       console.log("Returning cached data");
-      return cachedData;
+      return cachedData as PaginatedEmployeeDTO;
     }
   
     console.log("Fetching from database...");
-    const employees = await this.prisma.info.findMany();
   
-    await this.cacheManager.set(cacheKey, employees, 300_000);
-    return employees;
+    const { page, limit, sort, search } = options;
+    const orderBy = sort?.field && sort?.order ? { [sort.field]: sort.order } : undefined;
+  
+    const where: Prisma.InfoWhereInput | undefined = search?.trim()
+      ? {
+          OR: [
+            { emp_name: { contains: search, mode: Prisma.QueryMode.insensitive } }, 
+            { email: { contains: search, mode: Prisma.QueryMode.insensitive } }
+          ]
+        }
+      : undefined;
+  
+    try {
+      const [data, total] = await Promise.all([
+        this.prisma.info.findMany({
+          where,
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy
+        }),
+        this.prisma.info.count({ where })
+      ]);
+
+      const mappedData: EmployeeDTO[] = data.map(emp => ({
+        id: emp.id,
+        name: emp.emp_name,
+        email: emp.email,
+        empId: emp.emp_id,
+        statusDelete: emp.statusDelete
+      }));
+  
+      const response: PaginatedEmployeeDTO = { data: mappedData, page, limit, total };
+      await this.cacheManager.set(cacheKey, response, 300_000);
+  
+      return response;
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      throw new Error("Failed to fetch employees");
+    }
   }
   
 
